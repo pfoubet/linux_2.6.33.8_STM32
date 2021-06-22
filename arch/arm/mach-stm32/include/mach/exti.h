@@ -22,24 +22,31 @@
  * MA 02111-1307 USA
  */
 
+/* (C) Copyright 2021
+ * S.E.R.I.A.N.E., <www.seriane.fr>
+ * Patrick Foubet <pfoubet@seriane.fr>
+ *
+ * MAJ du 21/06/2021 - Licence GPL-2 (cf ci-dessus)
+ */
+
 #ifndef _MACH_STM32_EXTI_H_
 #define _MACH_STM32_EXTI_H_
 
 /* RTC Alarm event */
-#define STM32F2_EXTI_LINE_RTC_ALARM	17
+#define STM32F4_EXTI_LINE_RTC_ALARM	17
 /* RTC Tamper and TimeStamp events */
-#define STM32F2_EXTI_LINE_RTC_TIMESTAMP	21
+#define STM32F4_EXTI_LINE_RTC_TIMESTAMP	21
 /* RTC Wakeup event */
-#define STM32F2_EXTI_LINE_RTC_WAKEUP	22
+#define STM32F4_EXTI_LINE_RTC_WAKEUP	22
 /* Total number of EXTI event lines */
-#define STM32F2_EXTI_NUM_LINES		23
+#define STM32F4_EXTI_NUM_LINES		23
 
 /*
  * API functions of the STM32 EXTI controller driver
  *
  * See arch/arm/mach-stm32/exti.c for details on each of these functions.
  */
-void stm32_exti_enable_int(unsigned int line, int enable);
-void stm32_exti_clear_pending(unsigned int line);
+int stm32_exti_enable_int(unsigned int line, int enable);
+int stm32_exti_clear_pending(unsigned int line);
 
 #endif /* _MACH_STM32_EXTI_H_ */

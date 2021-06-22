@@ -21,6 +21,14 @@
  * Foundation, Inc., 59 Temple Place, Suite 330, Boston,
  * MA 02111-1307 USA
  */
+
+/* (C) Copyright 2021
+ * S.E.R.I.A.N.E., <www.seriane.fr>
+ * Patrick Foubet <pfoubet@seriane.fr>
+ *
+ * MAJ du 21/06/2021 - Licence GPL-2 (cf ci-dessus)
+ */
+
 #include <linux/module.h>
 
 #include <mach/exti.h>
@@ -37,49 +45,47 @@ struct kinetis_exti_regs {
 /*
  * EXTI register map base
  */
-#define KINETIS_EXTI_BASE	0x40013c00
-#define KINETIS_EXTI		((volatile struct kinetis_exti_regs *) \
-				KINETIS_EXTI_BASE)
+#define STM32F4_EXTI_BASE	0x40013c00
+#define STM32F4_EXTI		((volatile struct kinetis_exti_regs *) \
+				STM32F4_EXTI_BASE)
 
 /*
  * Enable or disable interrupt on the rising edge of a event line
  */
-void stm32_exti_enable_int(unsigned int line, int enable)
+int stm32_exti_enable_int(unsigned int line, int enable)
 {
-	if (line >= STM32F2_EXTI_NUM_LINES)
-		goto out;
-
+	if (line >= STM32F4_EXTI_NUM_LINES) return -EINVAL;
 	if (enable) {
 		stm32_exti_clear_pending(line);
 
 		/* Enable trigger on rising edge */
-		KINETIS_EXTI->rtsr |= (1 << line);
+		STM32F4_EXTI->rtsr |= (1 << line);
 		/* Disable trigger on falling edge */
-		KINETIS_EXTI->ftsr &= ~(1 << line);
+		STM32F4_EXTI->ftsr &= ~(1 << line);
 		/* Enable interrupt for the event */
-		KINETIS_EXTI->imr |= (1 << line);
+		STM32F4_EXTI->imr |= (1 << line);
 	} else {
 		/* Disable interrupt for the event */
-		KINETIS_EXTI->imr &= ~(1 << line);
+		STM32F4_EXTI->imr &= ~(1 << line);
 		/* Disable trigger on rising edge */
-		KINETIS_EXTI->rtsr &= ~(1 << line);
+		STM32F4_EXTI->rtsr &= ~(1 << line);
 		/* Disable trigger on falling edge */
-		KINETIS_EXTI->ftsr &= ~(1 << line);
+		STM32F4_EXTI->ftsr &= ~(1 << line);
 
 		stm32_exti_clear_pending(line);
 	}
-
-out:
-	;
+	return 0;
 }
 EXPORT_SYMBOL(stm32_exti_enable_int);
 
 /*
  * Clear the pending state of a given event
  */
-void stm32_exti_clear_pending(unsigned int line)
+int stm32_exti_clear_pending(unsigned int line)
 {
-	if (line < STM32F2_EXTI_NUM_LINES)
-		KINETIS_EXTI->pr = (1 << line);
+	if (line >= STM32F4_EXTI_NUM_LINES) return -EINVAL;
+
+	STM32F4_EXTI->pr = (1 << line);
+	return 0;
 }
 EXPORT_SYMBOL(stm32_exti_clear_pending);
