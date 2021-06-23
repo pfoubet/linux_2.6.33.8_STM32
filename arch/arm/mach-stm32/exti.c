@@ -26,14 +26,14 @@
  * S.E.R.I.A.N.E., <www.seriane.fr>
  * Patrick Foubet <pfoubet@seriane.fr>
  *
- * MAJ du 21/06/2021 - Licence GPL-2 (cf ci-dessus)
+ * MAJ du 23/06/2021 - Licence GPL-2 (cf ci-dessus)
  */
 
 #include <linux/module.h>
 
 #include <mach/exti.h>
 
-struct kinetis_exti_regs {
+struct stm32_exti_regs {
 	u32 imr;	/* Interrupt mask register */
 	u32 emr;	/* Event mask register */
 	u32 rtsr;	/* Rising trigger selection register */
@@ -46,7 +46,7 @@ struct kinetis_exti_regs {
  * EXTI register map base
  */
 #define STM32F4_EXTI_BASE	0x40013c00
-#define STM32F4_EXTI		((volatile struct kinetis_exti_regs *) \
+#define STM32F4_EXTI		((volatile struct stm32_exti_regs *) \
 				STM32F4_EXTI_BASE)
 
 /*
