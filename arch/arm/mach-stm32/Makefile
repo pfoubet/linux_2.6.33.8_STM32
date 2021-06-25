@@ -13,4 +13,3 @@ obj-$(CONFIG_I2C_STM32)		+= i2c.o
 obj-$(CONFIG_MTD_PHYSMAP)	+= flash.o
 obj-$(CONFIG_MMC_ARMMMCI)	+= sdcard.o
 obj-$(CONFIG_RTC_DRV_STM32F2)	+= rtc.o
-obj-$(CONFIG_LEDS_GPIO)		+= leds.o
